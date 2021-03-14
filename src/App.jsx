@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PhonebookForm from './Components/PhonebookForm';
 import ContactList from './Components/ContactList';
 import Filter from './Components/Filter';
@@ -11,6 +11,19 @@ const App = () => {
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ]);
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    const json = localStorage.getItem('contacts');
+    const savedContacts = JSON.parse(json);
+    if (savedContacts) {
+      setContacts(savedContacts);
+    }
+  }, []);
+
+  useEffect(() => {
+    const json = JSON.stringify(contacts);
+    localStorage.setItem('contacts', json);
+  });
 
   const handleSubmit = newContact => {
     setContacts(prevContacts => [newContact, ...prevContacts]);
